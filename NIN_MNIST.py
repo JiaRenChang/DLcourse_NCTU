@@ -132,3 +132,5 @@ for i in range(18760): #122~164 epochs
 
 ##final testing
 print("step %d, Test accuracy %g"%(i,  mnist_eval(sess)))
+
+sess.close()

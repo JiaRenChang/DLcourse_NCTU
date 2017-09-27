@@ -11,7 +11,7 @@ from torch.autograd import Variable
 parser = argparse.ArgumentParser(description='PyTorch MNIST Example')
 parser.add_argument('--batch-size', type=int, default=128, metavar='N',
                     help='input batch size for training (default: 128)')
-parser.add_argument('--epochs', type=int, default=164, metavar='N',
+parser.add_argument('--epochs', type=int, default=20, metavar='N',
                     help='number of epochs to train (default: 164)')
 parser.add_argument('--lr', type=float, default=0.1, metavar='LR',
                     help='learning rate (default: 0.1)')
@@ -77,9 +77,9 @@ optimizer = optim.SGD(model.parameters(), lr=args.lr, momentum=args.momentum)
 #learning rate scheduling
 def adjust_learning_rate(optimizer, epoch):
 
-    if epoch < 80:
+    if epoch < 10:
        lr = 0.01
-    elif epoch < 121:
+    elif epoch < 15:
        lr = 0.001
     else: 
        lr = 0.0001

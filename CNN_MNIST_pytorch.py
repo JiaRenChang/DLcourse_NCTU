@@ -68,7 +68,8 @@ class Net(nn.Module):
 
 model = Net()
 if args.cuda:
-    model.cuda()
+	device = torch.device('cuda')
+	model.to(device)
 
 #define optimizer/loss function
 Loss = nn.CrossEntropyLoss()
@@ -76,7 +77,6 @@ optimizer = optim.SGD(model.parameters(), lr=args.lr, momentum=args.momentum)
 
 #learning rate scheduling
 def adjust_learning_rate(optimizer, epoch):
-
     if epoch < 10:
        lr = 0.01
     elif epoch < 15:
@@ -94,8 +94,8 @@ def train(epoch):
 
     for batch_idx, (data, target) in enumerate(train_loader):
         if args.cuda:
-            data, target = data.cuda(), target.cuda()
-        data, target = Variable(data), Variable(target)
+            data, target = data.to(device), target.to(device)
+
         optimizer.zero_grad()
         output = model(data)
         loss = Loss(output, target)
@@ -112,9 +112,9 @@ def test(epoch):
     correct = 0
     for batch_idx, (data, target) in enumerate(test_loader):
         if args.cuda:
-            data, target = data.cuda(), target.cuda()
-        data, target = Variable(data, volatile=True), Variable(target)
-        output = model(data)
+            data, target = data.to(device), target.to(device)
+	with torch.no_grad():
+        	output = model(data)
         test_loss += Loss(output, target).data[0]
         pred = output.data.max(1)[1] # get the index of the max log-probability
         correct += pred.eq(target.data).cpu().sum()
